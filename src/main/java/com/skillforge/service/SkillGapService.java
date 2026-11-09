@@ -19,9 +19,10 @@ public class SkillGapService {
     public SkillGapResponse analyze(String email, String targetRole) {
         ProfileResponse p = profileService.getMyProfile(email);
         String role = (targetRole == null || targetRole.isBlank()) ? p.careerGoal() : targetRole;
-        if (role == null) role = "Backend Developer";
-        CareerRole cr = careerRoleRepository.findByNameIgnoreCase(role)
-                .orElseGet(() -> careerRoleRepository.findByNameIgnoreCase("Backend Developer").orElseThrow());
+        if (role == null || role.isBlank()) role = "Backend Developer";
+        final String finalRole = role;
+        CareerRole cr = careerRoleRepository.findByNameIgnoreCase(finalRole)
+                .orElseThrow(() -> new com.skillforge.exception.ResourceNotFoundException("Career role not found: " + finalRole));
         Set<String> have = p.skills().stream().map(s -> s.name().toLowerCase()).collect(Collectors.toSet());
         List<String> required = cr.getRequiredSkills();
         List<String> matched = required.stream().filter(s -> have.contains(s.toLowerCase())).toList();
