@@ -1,14 +1,11 @@
 package com.skillforge.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-/** Master skill list shared by all modules (profiles, role requirements, opportunities). */
 @Entity
 @Table(name = "skills")
-@Getter @Setter @NoArgsConstructor
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class Skill {
 
     @Id

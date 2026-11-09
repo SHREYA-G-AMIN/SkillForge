@@ -26,7 +26,7 @@ public class CareerDataSeeder implements CommandLineRunner {
         List<String> skills = List.of("Java","Spring Boot","SQL","REST API","Git","Docker","JavaScript","React","HTML","CSS","Python","Machine Learning","Statistics","Pandas","Linux","Kubernetes","CI/CD","AWS","Node.js","TypeScript");
         for (String s : skills) {
             if (!skillRepository.existsByNameIgnoreCase(s)) {
-                skillRepository.save(Skill.builder().name(s).build());
+                skillRepository.save(new Skill(s, null));
             }
         }
     }
