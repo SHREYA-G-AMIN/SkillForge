@@ -1,5 +1,5 @@
 // Single place that talks to the Spring Boot backend.
-const BASE_URL = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080').replace(/\/$/, '');
+const BASE_URL = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:8081').replace(/\/$/, '');
 const STORAGE_KEY = 'skillforge_auth';
 
 export class ApiError extends Error {
@@ -83,4 +83,29 @@ export const api = {
   createItem: (resource, payload) => request(`/api/profile/${resource}`, { method: 'POST', body: payload }),
   updateItem: (resource, id, payload) => request(`/api/profile/${resource}/${id}`, { method: 'PUT', body: payload }),
   deleteItem: (resource, id) => request(`/api/profile/${resource}/${id}`, { method: 'DELETE' }),
+
+  // opportunities & applications (Person 3)
+  listOpportunities: (params) => {
+    let qry = '';
+    if (params) {
+      const filtered = Object.entries(params).filter(([_, v]) => v !== undefined && v !== null && v !== '');
+      if (filtered.length > 0) {
+        qry = '?' + new URLSearchParams(filtered).toString();
+      }
+    }
+    return request(`/api/opportunities${qry}`);
+  },
+  getOpportunity: (id) => request(`/api/opportunities/${id}`),
+  applyTo: (id) => request(`/api/opportunities/${id}/apply`, { method: 'POST' }),
+  addBookmark: (id) => request(`/api/opportunities/${id}/bookmark`, { method: 'POST' }),
+  removeBookmark: (id) => request(`/api/opportunities/${id}/bookmark`, { method: 'DELETE' }),
+  listBookmarks: () => request('/api/profile/bookmarks'),
+  myApplications: () => request('/api/profile/applications'),
+  myPostings: () => request('/api/recruiter/opportunities'),
+  createOpportunity: (payload) => request('/api/recruiter/opportunities', { method: 'POST', body: payload }),
+  updateOpportunity: (id, payload) => request(`/api/recruiter/opportunities/${id}`, { method: 'PUT', body: payload }),
+  deleteOpportunity: (id) => request(`/api/recruiter/opportunities/${id}`, { method: 'DELETE' }),
+  setOpportunityStatus: (id, status) => request(`/api/recruiter/opportunities/${id}/status`, { method: 'PUT', body: { status } }),
+  getApplicants: (id) => request(`/api/recruiter/opportunities/${id}/applicants`),
+  updateApplicationStatus: (id, status) => request(`/api/applications/${id}/status`, { method: 'PUT', body: { status } }),
 };
