@@ -197,3 +197,24 @@ input:disabled { background: var(--canvas); color: var(--ink-soft); }
   .menu { animation: none; }
   .btn { transition: none; }
 }
+
+
+/* ---------- Person 3: Opportunities & Applications ---------- */
+.opportunity-card {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.opportunity-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(27, 31, 59, 0.08);
+}
+.bookmark-btn:hover {
+  transform: scale(1.15);
+}
+.status-tracker {
+  position: relative;
+}
+@media (max-width: 640px) {
+  .status-tracker {
+    grid-template-columns: 1fr 1fr;
+  }
+}

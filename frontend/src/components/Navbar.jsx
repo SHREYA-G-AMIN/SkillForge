@@ -28,14 +28,30 @@ export default function Navbar() {
     navigate('/login', { replace: true });
   };
 
+  const isRecruiter = auth?.role === 'RECRUITER';
+
   return (
     <header className="navbar">
       <div className="navbar-inner">
-        <Link to="/profile" className="brand">Skill<span>Forge</span></Link>
+        <Link to={isRecruiter ? '/recruiter/postings' : '/opportunities'} className="brand">
+          Skill<span>Forge</span>
+        </Link>
 
         <nav className="nav-links" aria-label="Main">
-          <NavLink to="/profile" end>My profile</NavLink>
-          <NavLink to="/profile/edit">Edit profile</NavLink>
+          {isRecruiter ? (
+            <>
+              <NavLink to="/recruiter/postings" end>My Postings</NavLink>
+              <NavLink to="/recruiter/postings/new">+ Post Opportunity</NavLink>
+            </>
+          ) : (
+            <>
+              <NavLink to="/opportunities">Opportunities</NavLink>
+              <NavLink to="/applications">My Applications</NavLink>
+              <NavLink to="/saved">Saved</NavLink>
+              <NavLink to="/profile" end>My Profile</NavLink>
+              <NavLink to="/profile/edit">Edit Profile</NavLink>
+            </>
+          )}
         </nav>
 
         <div className="user-menu" ref={menuRef}>
@@ -52,7 +68,12 @@ export default function Navbar() {
 
           {open && (
             <div className="menu">
-              <p className="menu-email">{auth?.email}</p>
+              <p className="menu-email">
+                <strong>{auth?.email}</strong>
+                <span style={{ display: 'block', fontSize: '0.75rem', color: 'var(--primary)', fontWeight: 700 }}>
+                  Role: {auth?.role}
+                </span>
+              </p>
               <p className="menu-title">Choose your emoji</p>
               <div className="emoji-grid">
                 {AVATAR_EMOJIS.map((e) => (
